@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppListaDeCompras.Views.ListToBuyPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:AppListaDeCompras.ViewModels"
+    Title="ListToBuyPage">
+    <ContentPage.BindingContext>
+        <vm:ListToBuyViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="75, *">
+        <StackLayout Padding="10" Orientation="Horizontal">
+            <ImageButton HeightRequest="37" Source="back.png" />
+            <Entry
+                Margin="15,0,0,0"
+                HorizontalOptions="FillAndExpand"
+                Placeholder="Pesquisar" />
+        </StackLayout>
+        <CollectionView Grid.Row="1" ItemsSource="{Binding ListToBuy}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="70, *, 70" RowDefinitions="Auto, 30">
+                        <Image Source="my_list.png" />
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="{Binding Name}" />
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding Products.Count}" />
+                                <Label Text=" Itens - " />
+                                <Label Text="{Binding Users.Count}" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="R$ 55,00" />
+                        <HorizontalStackLayout Grid.Row="1" Grid.ColumnSpan="3">
+                            <Button ImageSource="share.png" Text="Compartilhar" />
+                            <Button ImageSource="delete.png" Text="Excluir" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Label
+                    HorizontalOptions="CenterAndExpand"
+                    Style="{StaticResource Paragraph}"
+                    Text="Nenhuma lista de compras"
+                    VerticalOptions="CenterAndExpand" />
+            </CollectionView.EmptyView>
+        </CollectionView>
+        <Button
+            Grid.Row="1"
+            Margin="20"
+            HorizontalOptions="End"
+            Text="+"
+            VerticalOptions="End" />
+    </Grid>
+</ContentPage>
