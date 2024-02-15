@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage
+    x:Class="AppListaDeCompras.Views.Popups.ListToBuySharedPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:AppListaDeCompras.Libraries.Components"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:vm="clr-namespace:AppListaDeCompras.ViewModels.Popups"
+    Title="ListToBuySharedPage"
+    BackgroundColor="#AA000000"
+    CloseWhenBackgroundIsClicked="False">
+    <mopups:PopupPage.BindingContext>
+        <vm:ListToBuySharedPageViewModel />
+    </mopups:PopupPage.BindingContext>
+    <Border
+        BackgroundColor="White"
+        HeightRequest="400"
+        StrokeShape="RoundRectangle 12"
+        StrokeThickness="0"
+        WidthRequest="360">
+        <VerticalStackLayout>
+            <VerticalStackLayout Padding="20" Spacing="10">
+                <StackLayout Padding="20" Orientation="Horizontal">
+                    <Label
+                        Margin="20,0,0,0"
+                        HorizontalOptions="CenterAndExpand"
+                        Style="{StaticResource SmallHeadline}"
+                        Text="Compartilhar"
+                        VerticalOptions="Center" />
+                    <ImageButton Command="{Binding CloseCommand}" Source="close.png" />
+                </StackLayout>
+                <Entry Placeholder="E-mail" />
+                <Button Text="Adicionar" />
+            </VerticalStackLayout>
+
+            <CollectionView ItemsSource="{Binding List.Users}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout>
+                            <components:HorizontalLine Margin="0,15" Stroke="LightGray" />
+                            <Label
+                                Padding="20,0"
+                                Style="{StaticResource Paragraph}"
+                                Text="{Binding Name}" />
+                            <Label
+                                Padding="20,0"
+                                Style="{StaticResource Smalltext}"
+                                Text="{Binding Email}" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </Border>
+</mopups:PopupPage>
