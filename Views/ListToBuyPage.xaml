@@ -14,7 +14,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.BindingContext>
-        <vm:ListToBuyViewModel />
+        <vm:ListToBuyViewModel x:Name="vm" />
     </ContentPage.BindingContext>
     <Grid RowDefinitions="75, *">
         <StackLayout Padding="10" Orientation="Horizontal">
@@ -62,6 +62,8 @@
                             Stroke="LightGray" />
                         <HorizontalStackLayout Grid.Row="2" Grid.ColumnSpan="3">
                             <Button
+                                Command="{Binding OpenPopupSharePageCommand, Source={x:Reference vm}}"
+                                CommandParameter="{Binding .}"
                                 ImageSource="share.png"
                                 Style="{StaticResource ButtonBorderless}"
                                 Text="Compartilhar" />
