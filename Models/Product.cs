@@ -7,6 +7,6 @@
         public int Quantity { get; set; }
         public string QuantityUnitMeasure { get; set; }
         public decimal Price { get; set; }
-
+        public bool HasCaught { get; set; } = false;
     }
 }
