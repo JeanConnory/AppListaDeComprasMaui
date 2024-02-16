@@ -53,5 +53,16 @@ namespace AppListaDeCompras.ViewModels
 		{
 			MopupService.Instance.PushAsync(new ListToBuySharedPage(listSelected));
 		}
+
+		[RelayCommand]
+		private void OpenListOfItensPage(ListToBuy listSelected)
+		{
+			var pageParameter = new Dictionary<string, object>()
+			{
+				{ "ListToBuy", listSelected }
+			};
+
+			Shell.Current.GoToAsync("//ListToBuy/ListOfItens");
+		}
 	}
 }
