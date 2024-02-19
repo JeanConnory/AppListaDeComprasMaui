@@ -26,7 +26,7 @@ namespace AppListaDeCompras.ViewModels
 					],
 					Products =
 					[
-						new Product { Name = "Arroz 5kg", Quantity = 2, Price = 28.99m, HasCaught = true },
+						new Product { Name = "Arroz 5kg", Quantity = 10, Price = 128.99m, HasCaught = true },
 						new Product { Name = "Feijão 1kg", Quantity = 1, Price = 7.49m, HasCaught = true},
 						new Product { Name = "Leite Condensado", Quantity = 1, Price = 6.29m }
 					]
@@ -62,7 +62,7 @@ namespace AppListaDeCompras.ViewModels
 				{ "ListToBuy", listSelected }
 			};
 
-			Shell.Current.GoToAsync("//ListToBuy/ListOfItens");
+			Shell.Current.GoToAsync("//ListToBuy/ListOfItens", pageParameter);
 		}
 	}
 }

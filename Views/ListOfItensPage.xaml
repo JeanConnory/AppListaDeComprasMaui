@@ -5,7 +5,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:AppListaDeCompras.Libraries.Components"
     xmlns:converters="clr-namespace:AppListaDeCompras.Libraries.Converters"
+    xmlns:vm="clr-namespace:AppListaDeCompras.ViewModels"
     Title="ListOfItensPage">
+    <ContentPage.BindingContext>
+        <vm:ListOfItensPageViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:TextSharedListConverter x:Key="TextSharedListConverter" />
@@ -13,64 +17,59 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="75, *, 1, 75">
+    <Grid RowDefinitions="75, 60, *, 1, 60">
         <StackLayout Padding="10" Orientation="Horizontal">
             <ImageButton HeightRequest="37" Source="back.png" />
             <Entry
                 Margin="15,0,0,0"
                 HorizontalOptions="FillAndExpand"
-                Placeholder="Pesquisar" />
+                Placeholder="Pesquisar"
+                Text="{Binding ListToBuy.Name}" />
         </StackLayout>
-        <CollectionView Grid.Row="1" ItemsSource="{Binding ListToBuy}">
+        <Label
+            Grid.Row="1"
+            HorizontalTextAlignment="Center"
+            Style="{StaticResource SmallHeadline}"
+            Text="ITENS"
+            VerticalTextAlignment="Center" />
+        <CollectionView Grid.Row="2" ItemsSource="{Binding ListToBuy.Products}">
             <CollectionView.Header>
-                <components:HorizontalLine
-                    Grid.Row="0"
-                    Grid.ColumnSpan="3"
-                    Stroke="Gray" />
+                <components:HorizontalLine Grid.ColumnSpan="3" Stroke="Gray" />
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid ColumnDefinitions="90, *, 80" RowDefinitions="Auto, 1, 30, 1">
-                        <Image
-                            Grid.Row="0"
-                            Margin="15,10,0,10"
-                            HeightRequest="64"
-                            Source="my_list.png" />
+                    <Grid ColumnDefinitions="60, *, 100" RowDefinitions="Auto, 1">
+                        <CheckBox HorizontalOptions="End" />
                         <VerticalStackLayout
-                            Grid.Row="0"
                             Grid.Column="1"
-                            Margin="15,0,0,0"
+                            Margin="15,15,0,15"
                             VerticalOptions="Center">
                             <Label Style="{StaticResource Paragraph}" Text="{Binding Name}" />
                             <HorizontalStackLayout>
-                                <Label Style="{StaticResource Smalltext}" Text="{Binding Products.Count}" />
-                                <Label Style="{StaticResource Smalltext}" Text=" itens" />
-                                <Label Style="{StaticResource SmalltextEmphasis}" Text="{Binding Users.Count, Converter={StaticResource TextSharedListConverter}}" />
+                                <Label Style="{StaticResource Smalltext}" Text="Quantidade: " />
+                                <Label Style="{StaticResource Smalltext}" Text="{Binding Quantity}" />
+                                <Label Style="{StaticResource Smalltext}" Text="{Binding QuantityUnitMeasure}" />
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Text="{Binding ., Converter={StaticResource TextTotalOfPriceItensInCartConverter}}"
-                            VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Style="{StaticResource Smalltext}" Text="{Binding Quantity}" />
+                                        <Span Style="{StaticResource Smalltext}" Text="{Binding QuantityUnitMeasure}" />
+                                        <Span Style="{StaticResource Smalltext}" Text=" x " />
+                                        <Span Style="{StaticResource Smalltext}" Text="{Binding Price, StringFormat='{0:C}'}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label
+                                HorizontalOptions="Start"
+                                Style="{StaticResource SubHeadline}"
+                                Text="{Binding Price, StringFormat='{0:C}'}"
+                                VerticalOptions="Center" />
+                        </VerticalStackLayout>
                         <components:HorizontalLine
-                            Grid.Row="1"
-                            Grid.ColumnSpan="3"
-                            Stroke="LightGray" />
-                        <HorizontalStackLayout Grid.Row="2" Grid.ColumnSpan="3">
-                            <Button
-                                Command="{Binding OpenPopupSharePageCommand, Source={x:Reference vm}}"
-                                CommandParameter="{Binding .}"
-                                ImageSource="share.png"
-                                Style="{StaticResource ButtonBorderless}"
-                                Text="Compartilhar" />
-                            <Button
-                                ImageSource="delete.png"
-                                Style="{StaticResource ButtonBorderless}"
-                                Text="Excluir" />
-                        </HorizontalStackLayout>
-                        <components:HorizontalLine
-                            Grid.Row="3"
+                            Grid.Row="2"
                             Grid.ColumnSpan="3"
                             Stroke="Gray" />
                     </Grid>
@@ -85,26 +84,50 @@
             </CollectionView.EmptyView>
         </CollectionView>
         <Button
-            Grid.Row="1"
+            Grid.Row="2"
             Margin="20"
             HorizontalOptions="End"
             Text="+"
             VerticalOptions="End" />
 
-        <components:HorizontalLine Grid.Row="2" Stroke="LightGray" />
+        <components:HorizontalLine Grid.Row="3" Stroke="LightGray" />
 
-        <Grid Grid.Row="3" ColumnDefinitions="*,*,*">
-            <VerticalStackLayout Grid.Column="0">
-                <Label Text="Lista (0 itens)" />
-                <Label Text="Falta 0 Item" />
+        <Grid Grid.Row="4" ColumnDefinitions="*,*,*">
+            <VerticalStackLayout
+                Grid.Column="0"
+                Margin="12,0,0,0"
+                HorizontalOptions="Start"
+                VerticalOptions="Center">
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Style="{StaticResource Paragraph}" Text="Lista" />
+                            <Span Style="{StaticResource Smalltext}" Text=" (0 itens)" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Style="{StaticResource Smalltext}" Text="Falta 0 Item" />
             </VerticalStackLayout>
-            <VerticalStackLayout Grid.Column="1">
-                <Label Text="Carrinho" />
-                <Label Text="0 itens" />
+            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource Paragraph}"
+                    Text="Carrinho" />
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource Smalltext}"
+                    Text="0 itens" />
             </VerticalStackLayout>
-            <VerticalStackLayout Grid.Column="2">
-                <Label Text="Total" />
-                <Label Text="R$ 0,00" />
+            <VerticalStackLayout
+                Grid.Column="2"
+                Margin="0,0,12,0"
+                HorizontalOptions="End"
+                VerticalOptions="Center">
+                <Label
+                    HorizontalTextAlignment="End"
+                    Style="{StaticResource SubHeadline}"
+                    Text="Total" />
+                <Label Style="{StaticResource SmalltextEmphasis}" Text="R$ 0,00" />
             </VerticalStackLayout>
         </Grid>
     </Grid>
