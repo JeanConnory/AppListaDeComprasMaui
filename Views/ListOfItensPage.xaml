@@ -14,6 +14,8 @@
         <ResourceDictionary>
             <converters:TextSharedListConverter x:Key="TextSharedListConverter" />
             <converters:TextTotalOfPriceItensInCartConverter x:Key="TextTotalOfPriceItensInCartConverter" />
+            <converters:TextTotalPriceOfItemInCartConverter x:Key="TextTotalOfPriceItemInCartConverter" />
+            <converters:ColorTotalPriceOfItensInCartConverter x:Key="ColorTotalPriceOfItensInCartConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -39,7 +41,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="60, *, 100" RowDefinitions="Auto, 1">
-                        <CheckBox HorizontalOptions="End" />
+                        <CheckBox HorizontalOptions="End" IsChecked="{Binding HasCaught}" />
                         <VerticalStackLayout
                             Grid.Column="1"
                             Margin="15,15,0,15"
@@ -52,7 +54,7 @@
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
-                            <Label>
+                            <Label IsVisible="{Binding HasCaught}">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Style="{StaticResource Smalltext}" Text="{Binding Quantity}" />
@@ -65,8 +67,15 @@
                             <Label
                                 HorizontalOptions="Start"
                                 Style="{StaticResource SubHeadline}"
-                                Text="{Binding Price, StringFormat='{0:C}'}"
-                                VerticalOptions="Center" />
+                                TextColor="{Binding HasCaught, Converter={StaticResource ColorTotalPriceOfItensInCartConverter}}"
+                                VerticalOptions="Center">
+                                <Label.Text>
+                                    <MultiBinding Converter="{StaticResource TextTotalOfPriceItemInCartConverter}">
+                                        <Binding Path="." />
+                                        <Binding Path="HasCaught" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
                         </VerticalStackLayout>
                         <components:HorizontalLine
                             Grid.Row="2"
@@ -87,6 +96,7 @@
             Grid.Row="2"
             Margin="20"
             HorizontalOptions="End"
+            Style="{StaticResource ButtonTransparent}"
             Text="+"
             VerticalOptions="End" />
 
