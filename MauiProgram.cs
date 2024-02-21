@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 
 namespace AppListaDeCompras
@@ -10,6 +11,7 @@ namespace AppListaDeCompras
 			var builder = MauiApp.CreateBuilder();
 			builder
 				.UseMauiApp<App>()
+				.UseMauiCommunityToolkit()
 				.ConfigureMopups()
 				.ConfigureFonts(fonts =>
 				{

@@ -1,5 +1,6 @@
 ﻿using AppListaDeCompras.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace AppListaDeCompras.ViewModels
 {
@@ -12,6 +13,18 @@ namespace AppListaDeCompras.ViewModels
 		{
 			get => _listToBuy;
 			set => SetProperty(ref _listToBuy, value);
+		}
+
+		[RelayCommand]
+		private void UpdateListToBuy()
+		{
+			OnPropertyChanged(nameof(ListToBuy));
+		}
+
+		[RelayCommand]
+		private void BackPage()
+		{
+			Shell.Current.GoToAsync("..");
 		}
 	}
 }

@@ -5,10 +5,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:AppListaDeCompras.Libraries.Components"
     xmlns:converters="clr-namespace:AppListaDeCompras.Libraries.Converters"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:AppListaDeCompras.ViewModels"
     Title="ListOfItensPage">
     <ContentPage.BindingContext>
-        <vm:ListOfItensPageViewModel />
+        <vm:ListOfItensPageViewModel x:Name="vm" />
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -16,12 +17,18 @@
             <converters:TextTotalOfPriceItensInCartConverter x:Key="TextTotalOfPriceItensInCartConverter" />
             <converters:TextTotalPriceOfItemInCartConverter x:Key="TextTotalOfPriceItemInCartConverter" />
             <converters:ColorTotalPriceOfItensInCartConverter x:Key="ColorTotalPriceOfItensInCartConverter" />
+            <converters:TextQuantityItemOfListConverter x:Key="TextQuantityItemOfListConverter" />
+            <converters:TextQuantityItensNoCaughtConverter x:Key="TextQuantityItensNoCaughtConverter" />
+            <converters:TextQuantityItensCaughtConverter x:Key="TextQuantityItensCaughtConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <Grid RowDefinitions="75, 60, *, 1, 60">
         <StackLayout Padding="10" Orientation="Horizontal">
-            <ImageButton HeightRequest="37" Source="back.png" />
+            <ImageButton
+                Command="{Binding BackPageCommand}"
+                HeightRequest="37"
+                Source="back.png" />
             <Entry
                 Margin="15,0,0,0"
                 HorizontalOptions="FillAndExpand"
@@ -41,7 +48,11 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="60, *, 100" RowDefinitions="Auto, 1">
-                        <CheckBox HorizontalOptions="End" IsChecked="{Binding HasCaught}" />
+                        <CheckBox HorizontalOptions="End" IsChecked="{Binding HasCaught}">
+                            <CheckBox.Behaviors>
+                                <toolkit:EventToCommandBehavior Command="{Binding UpdateListToBuyCommand, Source={x:Reference vm}}" EventName="CheckedChanged" />
+                            </CheckBox.Behaviors>
+                        </CheckBox>
                         <VerticalStackLayout
                             Grid.Column="1"
                             Margin="15,15,0,15"
@@ -111,12 +122,16 @@
                 <Label>
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Style="{StaticResource Paragraph}" Text="Lista" />
-                            <Span Style="{StaticResource Smalltext}" Text=" (0 itens)" />
+                            <Span Style="{StaticResource Smalltext}" Text="Lista " />
+                            <Span Style="{StaticResource Smalltext}" Text="(" />
+                            <Span Style="{StaticResource Smalltext}" Text="{Binding ListToBuy.Products.Count}" />
+                            <Span Style="{StaticResource Smalltext}" Text=" " />
+                            <Span Style="{StaticResource Smalltext}" Text="{Binding ListToBuy.Products.Count, Converter={StaticResource TextQuantityItemOfListConverter}}" />
+                            <Span Style="{StaticResource Smalltext}" Text=")" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label Style="{StaticResource Smalltext}" Text="Falta 0 Item" />
+                <Label Style="{StaticResource Smalltext}" Text="{Binding ListToBuy.Products, Converter={StaticResource TextQuantityItensNoCaughtConverter}}" />
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                 <Label
@@ -126,7 +141,7 @@
                 <Label
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource Smalltext}"
-                    Text="0 itens" />
+                    Text="{Binding ListToBuy.Products, Converter={StaticResource TextQuantityItensCaughtConverter}}" />
             </VerticalStackLayout>
             <VerticalStackLayout
                 Grid.Column="2"
@@ -137,7 +152,7 @@
                     HorizontalTextAlignment="End"
                     Style="{StaticResource SubHeadline}"
                     Text="Total" />
-                <Label Style="{StaticResource SmalltextEmphasis}" Text="R$ 0,00" />
+                <Label Style="{StaticResource SmalltextEmphasis}" Text="{Binding ListToBuy.Products, Converter={StaticResource TextTotalOfPriceItensInCartConverter}}" />
             </VerticalStackLayout>
         </Grid>
     </Grid>
