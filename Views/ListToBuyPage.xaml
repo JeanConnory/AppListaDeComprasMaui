@@ -54,7 +54,7 @@
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="2"
-                                Text="{Binding ., Converter={StaticResource TextTotalOfPriceItensInCartConverter}}"
+                                Text="{Binding Products, Converter={StaticResource TextTotalOfPriceItensInCartConverter}}"
                                 VerticalOptions="Center" />
                         </Grid>
                         <components:HorizontalLine Stroke="LightGray" />
