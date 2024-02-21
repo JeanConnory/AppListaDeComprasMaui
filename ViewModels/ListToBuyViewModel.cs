@@ -26,9 +26,11 @@ namespace AppListaDeCompras.ViewModels
 					],
 					Products =
 					[
-						new Product { Name = "Arroz 5kg", Quantity = 10, Price = 128.99m, HasCaught = true },
-						new Product { Name = "Feijão 1kg", Quantity = 1, Price = 7.49m, HasCaught = true},
-						new Product { Name = "Leite Condensado", Quantity = 1, Price = 6.29m }
+						new Product { Name = "Arroz 5kg", Quantity = 10, QuantityUnitMeasure = Models.Enums.UnitMeasure.Un, Price = 128.99m, HasCaught = true },
+						new Product { Name = "Feijão 1kg", Quantity = 1,  QuantityUnitMeasure = Models.Enums.UnitMeasure.Un, Price = 7.49m, HasCaught = true},
+						new Product { Name = "Leite Condensado", Quantity = 1, QuantityUnitMeasure = Models.Enums.UnitMeasure.Un, Price = 6.29m },
+						new Product { Name = "Coxão Mole", Quantity = 1.5m, QuantityUnitMeasure = Models.Enums.UnitMeasure.Kg, Price = 29.80m },
+						new Product { Name = "Alcatra", Quantity = 1.5m, QuantityUnitMeasure = Models.Enums.UnitMeasure.Kg}
 					]
 				},
 				new()
