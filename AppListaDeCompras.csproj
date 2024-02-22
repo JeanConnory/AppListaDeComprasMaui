@@ -97,6 +97,9 @@
 	  <MauiXaml Update="Views\ListToBuyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Popups\ListOfItensAddItemPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Popups\ListToBuySharedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

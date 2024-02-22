@@ -106,6 +106,7 @@
         <Button
             Grid.Row="2"
             Margin="20"
+            Command="{Binding OpenPopupAddItemPageCommand}"
             HorizontalOptions="End"
             Style="{StaticResource ButtonTransparent}"
             Text="+"
