@@ -66,5 +66,11 @@ namespace AppListaDeCompras.ViewModels
 
 			Shell.Current.GoToAsync("//ListToBuy/ListOfItens", pageParameter);
 		}
+
+		[RelayCommand]
+		private void OpenAddListOfItensPage()
+		{ 
+			Shell.Current.GoToAsync("//ListToBuy/ListOfItens");
+		}
 	}
 }

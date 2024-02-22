@@ -85,6 +85,7 @@
         <Button
             Grid.Row="1"
             Margin="20"
+            Command="{Binding OpenAddListOfItensPageCommand}"
             HorizontalOptions="End"
             Text="+"
             VerticalOptions="End" />
