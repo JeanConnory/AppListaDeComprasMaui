@@ -1,4 +1,5 @@
-﻿using AppListaDeCompras.Views;
+﻿using AppListaDeCompras.ViewModels;
+using AppListaDeCompras.Views;
 
 namespace AppListaDeCompras
 {
@@ -9,6 +10,7 @@ namespace AppListaDeCompras
 			InitializeComponent();
 
 			Routing.RegisterRoute("ListToBuy/ListOfItens", typeof(ListOfItensPage));
+			Routing.RegisterRoute("Profile/AccessCode", typeof(AccessCodePage));
 		}
 	}
 }
