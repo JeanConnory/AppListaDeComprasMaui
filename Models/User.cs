@@ -1,11 +1,27 @@
-﻿namespace AppListaDeCompras.Models
+﻿using MongoDB.Bson;
+using Realms;
+
+namespace AppListaDeCompras.Models
 {
-	public class User
+	public partial class User : IRealmObject
 	{
-        public int Id { get; set; }
+		[PrimaryKey]
+		[MapTo("_id")]
+        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+		
+		[MapTo("name")]
 		public string Name { get; set; }
+
+		[MapTo("email")]
 		public string Email { get; set; }
+
+		[MapTo("access_code_temp")]
 		public string AccessCodeTemp { get; set; }
-        public DateTimeOffset AccessCodeTempCreatedAt { get; set; }
-    }
+
+		[MapTo("access_code_temp_created_at")]
+		public DateTimeOffset AccessCodeTempCreatedAt { get; set; }
+
+		[MapTo("created_at")]
+		public DateTimeOffset CreatedAt { get; set; }
+	}
 }
