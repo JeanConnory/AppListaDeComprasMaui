@@ -1,4 +1,5 @@
-﻿using AppListaDeCompras.Models;
+﻿using AppListaDeCompras.Libraries.Services;
+using AppListaDeCompras.Models;
 using AppListaDeCompras.Views.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,41 +14,14 @@ namespace AppListaDeCompras.ViewModels
 		public ObservableCollection<ListToBuy> _listToBuy;
 
 		public ListToBuyViewModel()
+		{			
+		}
+
+		[RelayCommand]
+		private async Task OnAppearing()
 		{
-			ListToBuy = new ObservableCollection<ListToBuy>()
-			{
-				new()
-				{
-					Name = "Minha Lista",
-					Users =
-					[
-						new User {Name = "Jean Michael", Email = "jean@gmail.com"},
-						new User {Name = "Jessica Jamilly", Email = "jessica@gmail.com"}
-					],
-					Products =
-					[
-						new Product { Name = "Arroz 5kg", Quantity = 10, QuantityUnitMeasure = Models.Enums.UnitMeasure.Un, Price = 128.99m, HasCaught = true },
-						new Product { Name = "Feijão 1kg", Quantity = 1,  QuantityUnitMeasure = Models.Enums.UnitMeasure.Un, Price = 7.49m, HasCaught = true},
-						new Product { Name = "Leite Condensado", Quantity = 1, QuantityUnitMeasure = Models.Enums.UnitMeasure.Un, Price = 6.29m },
-						new Product { Name = "Coxão Mole", Quantity = 1.5m, QuantityUnitMeasure = Models.Enums.UnitMeasure.Kg, Price = 29.80m },
-						new Product { Name = "Alcatra", Quantity = 1.5m, QuantityUnitMeasure = Models.Enums.UnitMeasure.Kg}
-					]
-				},
-				new()
-				{
-					Name = "Minha Lista 2",
-					Users = new()
-					{
-						new User {Name = "Elias Ribeiro", Email = "elias@gmail.com"}
-					},
-					Products = new()
-					{
-						new Product { Name = "Arroz 5kg", Quantity = 2, Price = 36.99m, HasCaught = true },
-						new Product { Name = "Feijão 1kg", Quantity = 1, Price = 8.49m, HasCaught = true},
-						new Product { Name = "Leite Condensado", Quantity = 1, Price = 5.29m, HasCaught = true }
-					}
-				}
-			};
+			await MongoDBAtlasService.Init();
+			await MongoDBAtlasService.LoginAsync();
 		}
 
 		[RelayCommand]
