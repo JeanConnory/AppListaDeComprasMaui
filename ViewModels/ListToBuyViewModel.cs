@@ -4,14 +4,13 @@ using AppListaDeCompras.Views.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mopups.Services;
-using System.Collections.ObjectModel;
 
 namespace AppListaDeCompras.ViewModels
 {
 	public partial class ListToBuyViewModel : ObservableObject
 	{
 		[ObservableProperty]
-		public ObservableCollection<ListToBuy> _listToBuy;
+		public IQueryable<ListToBuy> _listsOflistToBuy;
 
 		public ListToBuyViewModel()
 		{			
@@ -22,6 +21,9 @@ namespace AppListaDeCompras.ViewModels
 		{
 			await MongoDBAtlasService.Init();
 			await MongoDBAtlasService.LoginAsync();
+
+			var realm = MongoDBAtlasService.GetMainThreadRealm();
+			ListsOflistToBuy = realm.All<ListToBuy>();
 		}
 
 		[RelayCommand]
@@ -31,7 +33,7 @@ namespace AppListaDeCompras.ViewModels
 		}
 
 		[RelayCommand]
-		private void OpenListOfItensPage(ListToBuy listSelected)
+		private void OpenListOfItensToEdit(ListToBuy listSelected)
 		{
 			var pageParameter = new Dictionary<string, object>()
 			{
@@ -42,7 +44,7 @@ namespace AppListaDeCompras.ViewModels
 		}
 
 		[RelayCommand]
-		private void OpenAddListOfItensPage()
+		private void OpenListOfItensToAdd()
 		{ 
 			Shell.Current.GoToAsync("//ListToBuy/ListOfItens");
 		}
