@@ -1,4 +1,5 @@
 using System.Text.Json;
+using AppListaDeCompras.Models;
 using Realms;
 using Realms.Sync;
 
@@ -12,7 +13,7 @@ namespace AppListaDeCompras.Libraries.Services
 
         private static Realm mainThreadRealm;
 
-        public static User CurrentUser => app.CurrentUser;
+        public static Realms.Sync.User CurrentUser => app.CurrentUser;
 
         public static string DataExplorerLink;
 
@@ -54,16 +55,14 @@ namespace AppListaDeCompras.Libraries.Services
 
         public static Realm GetRealm()
         {
-            var config = new FlexibleSyncConfiguration(app.CurrentUser)
-            {
-                PopulateInitialSubscriptions = (realm) =>
-                {
-                    //var (query, queryName) = GetQueryForSubscriptionType(realm, SubscriptionType.Mine);
-                    //realm.Subscriptions.Add(query, new SubscriptionOptions { Name = queryName });
-                }
-            };
+            var config = new FlexibleSyncConfiguration(app.CurrentUser);
+            var realm = Realm.GetInstance(config);
 
-            return Realm.GetInstance(config);
+            realm.All<ListToBuy>().SubscribeAsync();
+            realm.All<Product>().SubscribeAsync();
+            realm.All<Models.User>().SubscribeAsync();
+
+			return realm;
         }
 
         public static async Task RegisterAsync(string email, string password)
@@ -82,7 +81,7 @@ namespace AppListaDeCompras.Libraries.Services
 
         public static async Task LoginAsync()
         {
-            User user = CurrentUser;
+            Realms.Sync.User user = CurrentUser;
 
             if(CurrentUser == null)
                 user = await app.LogInAsync(Credentials.Anonymous());
