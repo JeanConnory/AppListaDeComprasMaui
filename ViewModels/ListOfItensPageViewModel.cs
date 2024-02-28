@@ -49,12 +49,6 @@ namespace AppListaDeCompras.ViewModels
 		}
 
 		[RelayCommand]
-		private void UpdateListToBuy()
-		{
-			OnPropertyChanged(nameof(ListToBuy));
-		}
-
-		[RelayCommand]
 		private void BackPage()
 		{
 			Shell.Current.GoToAsync("..");
@@ -64,6 +58,23 @@ namespace AppListaDeCompras.ViewModels
 		private void OpenPopupAddItemPage()
 		{
 			MopupService.Instance.PushAsync(new ListOfItensAddItemPage(ListToBuy));
+		}
+
+		[RelayCommand]
+		private void OpenPopupEditItemPage(Product product)
+		{
+			MopupService.Instance.PushAsync(new ListOfItensAddItemPage(ListToBuy, product));
+		}
+
+		[RelayCommand]
+		private async Task DeleteItem(Product product)
+		{
+			var realm = MongoDBAtlasService.GetMainThreadRealm();
+
+			await realm.WriteAsync(() =>
+			{
+				realm.Remove(product);
+			});
 		}
 	}
 }
