@@ -14,4 +14,14 @@ public partial class ListOfItensAddItemPage : PopupPage
 
 		vm.List = listToBuy;
 	}
+
+	public ListOfItensAddItemPage(ListToBuy listToBuy, Product product)
+	{
+		InitializeComponent();
+
+		var vm = (ListOfItensAddItemPageViewModel)BindingContext;
+
+		vm.List = listToBuy;
+		vm.Product = product;
+	}
 }

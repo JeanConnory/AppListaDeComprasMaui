@@ -48,5 +48,20 @@ namespace AppListaDeCompras.ViewModels
 		{ 
 			Shell.Current.GoToAsync("//ListToBuy/ListOfItens");
 		}
+
+		[RelayCommand]
+		private async Task DeleteList(ListToBuy listSelected)
+		{
+			var resposta = await App.Current.MainPage.DisplayAlert("Excluir Lista", $"Tem certeza que deseja excluir a lista '{listSelected.Name}'?", "Sim", "Não");
+
+			if(resposta)
+			{
+				var realm = MongoDBAtlasService.GetMainThreadRealm();
+				await realm.WriteAsync(() =>
+				{
+					realm.Remove(listSelected);
+				});
+			}
+		}
 	}
 }
