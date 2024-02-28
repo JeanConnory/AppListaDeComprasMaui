@@ -63,7 +63,7 @@ namespace AppListaDeCompras.ViewModels
 		[RelayCommand]
 		private void OpenPopupAddItemPage()
 		{
-			MopupService.Instance.PushAsync(new ListOfItensAddItemPage());
+			MopupService.Instance.PushAsync(new ListOfItensAddItemPage(ListToBuy));
 		}
 	}
 }

@@ -1,10 +1,5 @@
 ﻿using AppListaDeCompras.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppListaDeCompras.Libraries.Converters
 {
@@ -12,7 +7,7 @@ namespace AppListaDeCompras.Libraries.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			List<Product> products = (List<Product>)value;
+			IList<Product> products = (IList<Product>)value;
 
 			var caughtCount = products.Where(a => a.HasCaught == true).Count();
 
