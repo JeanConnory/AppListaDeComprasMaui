@@ -3,6 +3,7 @@ using AppListaDeCompras.Models;
 using AppListaDeCompras.Views.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using MongoDB.Bson;
 using Mopups.Services;
 
@@ -22,7 +23,13 @@ namespace AppListaDeCompras.ViewModels
         public ListOfItensPageViewModel()
         {
             ListToBuy = new ListToBuy();
-        }
+
+			WeakReferenceMessenger.Default.Register<string>(string.Empty, (obj, str) =>
+			{
+				UpdateListToBuy();
+			});
+
+		}
 
         [RelayCommand]
 		private async Task SaveListToBuy()
@@ -75,6 +82,12 @@ namespace AppListaDeCompras.ViewModels
 			{
 				realm.Remove(product);
 			});
+		}
+
+		[RelayCommand]
+		private void UpdateListToBuy()
+		{
+			OnPropertyChanged(nameof(ListToBuy));	
 		}
 	}
 }
