@@ -17,12 +17,19 @@ namespace AppListaDeCompras.ViewModels
 		public ListToBuy ListToBuy
 		{
 			get => _listToBuy;
-			set => SetProperty(ref _listToBuy, value);
+			set
+			{
+				ListToBuyName = value.Name;
+				SetProperty(ref _listToBuy, value);
+			}
 		}
 
-        public ListOfItensPageViewModel()
-        {
-            ListToBuy = new ListToBuy();
+		[ObservableProperty]
+		private string _listToBuyName;
+
+		public ListOfItensPageViewModel()
+		{
+			ListToBuy = new ListToBuy();
 
 			WeakReferenceMessenger.Default.Register<string>(string.Empty, (obj, str) =>
 			{
@@ -31,25 +38,30 @@ namespace AppListaDeCompras.ViewModels
 
 		}
 
-        [RelayCommand]
+		[RelayCommand]
 		private async Task SaveListToBuy()
 		{
-			if (string.IsNullOrWhiteSpace(ListToBuy.Name))
+			if (string.IsNullOrWhiteSpace(ListToBuyName))
+			{
+				await App.Current.MainPage.DisplayAlert("Nome da lista", "O nome da lista deve ser preenchido", "OK");
 				return;
+			}
 
 			var realm = MongoDBAtlasService.GetMainThreadRealm();
 
 			await realm.WriteAsync(() =>
 			{
-				if(ListToBuy.Id == default(ObjectId))
+				if (ListToBuy.Id == default(ObjectId))
 				{
 					ListToBuy.Id = ObjectId.GenerateNewId();
 					ListToBuy.CreatedAt = DateTime.UtcNow;
+					ListToBuy.Name = ListToBuyName;
 
 					realm.Add(ListToBuy);
 				}
 				else
 				{
+					ListToBuy.Name = ListToBuyName;
 					realm.Add(ListToBuy, update: true);
 				}
 			});
@@ -87,7 +99,7 @@ namespace AppListaDeCompras.ViewModels
 		[RelayCommand]
 		private void UpdateListToBuy()
 		{
-			OnPropertyChanged(nameof(ListToBuy));	
+			OnPropertyChanged(nameof(ListToBuy));
 		}
 	}
 }
