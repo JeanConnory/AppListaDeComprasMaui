@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="AppListaDeCompras.ViewModels.AccessCodePage"
+    x:Class="AppListaDeCompras.Views.AccessCodePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:AppListaDeCompras.ViewModels"
@@ -13,7 +13,7 @@
             <Image
                 HeightRequest="{OnPlatform Default=330,
                                            Android=290}"
-                SemanticProperties.Description="Imagem de um envelope de e-mail"
+                SemanticProperties.Description="Imagem de um cadeado"
                 Source="image_password.png" />
             <Label
                 SemanticProperties.HeadingLevel="Level1"
@@ -26,10 +26,10 @@
                 Text="Enviamos um código para seu e-mail, &#10;informe ele abaixo" />
             <Entry
                 Placeholder="Código de acesso"
-                Text="{Binding User.AccessCodeTemp}"
+                Text="{Binding AccessCode}"
                 VerticalOptions="EndAndExpand" />
             <Button
-                Command="{Binding NavigateToAccessCodePageCommand}"
+                Command="{Binding VerifyAccessCodeCommand}"
                 SemanticProperties.Description="Acessa a próxima tela do aplicativo para informar o código de acesso enviado para o seu e-mail"
                 SemanticProperties.Hint="Confirmar"
                 Text="Confirmar" />
