@@ -1,4 +1,4 @@
-namespace AppListaDeCompras.ViewModels;
+namespace AppListaDeCompras.Views;
 
 public partial class AccessCodePage : ContentPage
 {

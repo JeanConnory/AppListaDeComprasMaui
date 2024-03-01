@@ -3,6 +3,7 @@ using AppListaDeCompras.Libraries.Utilities;
 using AppListaDeCompras.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace AppListaDeCompras.ViewModels
 {
@@ -11,10 +12,29 @@ namespace AppListaDeCompras.ViewModels
 		[ObservableProperty]
         public User user;
 
+        [ObservableProperty]
+        private bool isLogged;
+
+        [ObservableProperty]
+        private string textUserLogged;
+
         public ProfilePageViewModel()
         {
-            user = new User();            
+            user = new User();
+			GetLoggedUserMessage();
+
+			WeakReferenceMessenger.Default.Register(string.Empty, (object obj, string str) =>
+            {
+                GetLoggedUserMessage();
+            });
         }
+
+        private void GetLoggedUserMessage()
+        {
+			IsLogged = UserLoggedManager.ExistsUser();
+            var user = UserLoggedManager.GetUser();
+			TextUserLogged = $"Usuário logado! {user.Name} {user.Email}";
+		}
 
         [RelayCommand]
         private async Task NavigateToAccessCodePage()
@@ -47,6 +67,13 @@ namespace AppListaDeCompras.ViewModels
             var parameters = new Dictionary<string, object>();
             parameters.Add("usuario", User);
             await Shell.Current.GoToAsync("//Profile/AccessCode", parameters);
+        }
+
+        [RelayCommand]
+        private async Task Logout()
+        {
+            UserLoggedManager.RemoveUser();
+            IsLogged = false;
         }
     }
 }
