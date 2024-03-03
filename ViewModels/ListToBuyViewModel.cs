@@ -15,6 +15,8 @@ namespace AppListaDeCompras.ViewModels
 		[ObservableProperty]
 		public IQueryable<ListToBuy> _listsOflistToBuy;
 
+		public IQueryable<ListToBuy> _backupListsOflistToBuy;
+
 		public ListToBuyViewModel()
 		{			
 		}
@@ -38,6 +40,15 @@ namespace AppListaDeCompras.ViewModels
 				ListsOflistToBuy = realm.All<ListToBuy>()
 					.Where(a => a.AnonymousUserId == anonymousId);
 			}
+			_backupListsOflistToBuy = ListsOflistToBuy;
+		}
+
+		[RelayCommand]
+		private void Search(Entry entry)
+		{
+			string word = string.IsNullOrWhiteSpace(entry.Text) ? "" : entry.Text;
+
+			ListsOflistToBuy = _backupListsOflistToBuy.Where(a => a.Name.Contains(word, StringComparison.OrdinalIgnoreCase));
 		}
 
 		[RelayCommand]
