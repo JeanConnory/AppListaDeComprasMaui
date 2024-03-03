@@ -1,8 +1,10 @@
-﻿using AppListaDeCompras.Libraries.Utilities;
+﻿using AppListaDeCompras.Libraries.Services;
+using AppListaDeCompras.Libraries.Utilities;
 using AppListaDeCompras.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using MongoDB.Bson;
 
 namespace AppListaDeCompras.ViewModels
 {
@@ -18,11 +20,11 @@ namespace AppListaDeCompras.ViewModels
 		[RelayCommand]
 		private async Task VerifyAccessCode()
 		{
-			if(AccessCode == User.AccessCodeTemp) 
+			if (AccessCode == User.AccessCodeTemp)
 			{
 				var finalDate = User.AccessCodeTempCreatedAt.AddMinutes(5);
 
-				if(DateTime.UtcNow > finalDate)
+				if (DateTime.UtcNow > finalDate)
 				{
 					await App.Current.MainPage.DisplayAlert("Alerta!", "Código de acesso expirado!", "OK");
 					return;
@@ -30,7 +32,9 @@ namespace AppListaDeCompras.ViewModels
 
 				UserLoggedManager.SetUSer(User);
 
-				WeakReferenceMessenger.Default.Send(string.Empty);
+				WeakReferenceMessenger.Default.Send("Logado");
+
+				TransferAllListToBuyAnonymousToUserLogged(User);
 
 				await AppShell.Current.GoToAsync("../");
 			}
@@ -40,6 +44,22 @@ namespace AppListaDeCompras.ViewModels
 				AccessCode = string.Empty;
 				return;
 			}
+		}
+
+		private void TransferAllListToBuyAnonymousToUserLogged(User userLogged)
+		{
+			var realm = MongoDBAtlasService.GetMainThreadRealm();
+			var userLoggedId = new ObjectId(MongoDBAtlasService.CurrentUser.Id);
+			var listToBuy = realm.All<ListToBuy>().Where(a => a.AnonymousUserId == userLoggedId).ToList();
+
+			realm.WriteAsync(() =>
+			{
+				foreach (var list in listToBuy)
+				{
+					list.AnonymousUserId = default(ObjectId);
+					list.Users.Add(userLogged);
+				}
+			});
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using AppListaDeCompras.Libraries.Services;
+using AppListaDeCompras.Libraries.Utilities;
 using AppListaDeCompras.Models;
 using AppListaDeCompras.Views.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -31,9 +32,9 @@ namespace AppListaDeCompras.ViewModels
 		{
 			ListToBuy = new ListToBuy();
 
-			if (!WeakReferenceMessenger.Default.IsRegistered<string>(string.Empty))
+			if (!WeakReferenceMessenger.Default.IsRegistered<string>("NewItem"))
 			{
-				WeakReferenceMessenger.Default.Register<string>(string.Empty, (obj, str) =>
+				WeakReferenceMessenger.Default.Register<string>("NewItem", (obj, str) =>
 				{
 					UpdateListToBuy();
 				});
@@ -58,6 +59,21 @@ namespace AppListaDeCompras.ViewModels
 					ListToBuy.Id = ObjectId.GenerateNewId();
 					ListToBuy.CreatedAt = DateTime.UtcNow;
 					ListToBuy.Name = ListToBuyName;
+
+					if (UserLoggedManager.ExistsUser())
+					{
+						var user = UserLoggedManager.GetUser();
+						var userDb = realm.All<User>().Where(a => a.Id == user.Id).FirstOrDefault();
+
+						if (userDb != null)
+						{
+							ListToBuy.Users.Add(userDb);
+						}
+					}
+					else
+					{
+						ListToBuy.AnonymousUserId = new ObjectId(MongoDBAtlasService.CurrentUser.Id);
+					}
 
 					realm.Add(ListToBuy);
 				}
