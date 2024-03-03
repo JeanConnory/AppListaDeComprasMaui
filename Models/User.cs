@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using AppListaDeCompras.Libraries.Utilities;
+using MongoDB.Bson;
+using Newtonsoft.Json;
 using Realms;
 
 namespace AppListaDeCompras.Models
@@ -7,7 +9,8 @@ namespace AppListaDeCompras.Models
 	{
 		[PrimaryKey]
 		[MapTo("_id")]
-        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+		[JsonConverter(typeof(ObjectIdConverter))]
+        public ObjectId Id { get; set; }
 		
 		[MapTo("name")]
 		public string Name { get; set; }
