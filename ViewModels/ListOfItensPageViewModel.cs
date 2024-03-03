@@ -31,11 +31,13 @@ namespace AppListaDeCompras.ViewModels
 		{
 			ListToBuy = new ListToBuy();
 
-			WeakReferenceMessenger.Default.Register<string>(string.Empty, (obj, str) =>
+			if (!WeakReferenceMessenger.Default.IsRegistered<string>(string.Empty))
 			{
-				UpdateListToBuy();
-			});
-
+				WeakReferenceMessenger.Default.Register<string>(string.Empty, (obj, str) =>
+				{
+					UpdateListToBuy();
+				});
+			}
 		}
 
 		[RelayCommand]
