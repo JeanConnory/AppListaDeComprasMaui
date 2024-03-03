@@ -9,7 +9,10 @@ namespace AppListaDeCompras.Models
 		[MapTo("_id")]
 		public ObjectId Id { get; set; }
 
-		[MapTo("name")]
+        [MapTo("_anonymousUserId")]
+        public ObjectId AnonymousUserId { get; set; }
+
+        [MapTo("name")]
 		public string Name { get; set; }
 
 		[MapTo("products")]
